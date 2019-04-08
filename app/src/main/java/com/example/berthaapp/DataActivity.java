@@ -4,25 +4,30 @@ import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 
-public class DataActivity extends AppCompatActivity {
+import android.widget.Toast;
+public class DataActivity extends AppCompatActivity implements GestureDetector.OnGestureListener {
     public static final String DATA="DATA";
     private Data data;
     private TextView deviceIdView,pm25View,pm10View,co2View
             ,o3View,pressureView
             ,temperatureView,humidityView,utcView
             ,latitudeView,longitudeView,noiseView,userIdView;
+    private static final String TAG="Gestures";
+    private GestureDetector gestureDetector;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_data);
-
-        ActionBar actionBar=getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
+//        ActionBar actionBar=getSupportActionBar();
+//        actionBar.setDisplayHomeAsUpEnabled(true);
 
         Intent intent=getIntent();
         data=(Data)intent.getSerializableExtra(DATA);
@@ -66,11 +71,60 @@ public class DataActivity extends AppCompatActivity {
 
         noiseView=findViewById(R.id.data_noise_edittext);
         noiseView.setText(String.valueOf(data.getNoise()));
-
-
-
+        gestureDetector=new GestureDetector(this,this);
     }
     public void back(View view) {
         finish();
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent motionEvent){
+        Log.d(TAG, "onTouch: " + motionEvent);
+        boolean eventHandling=true;
+        return gestureDetector.onTouchEvent(motionEvent);
+    }
+    @Override
+    public boolean onDown(MotionEvent motionEvent) {
+        return true;
+    }
+
+    @Override
+    public void onShowPress(MotionEvent motionEvent) {
+
+    }
+
+    @Override
+    public boolean onSingleTapUp(MotionEvent motionEvent) {
+        return false;
+    }
+
+    @Override
+    public boolean onScroll(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
+        return true;
+    }
+
+    @Override
+    public void onLongPress(MotionEvent motionEvent) {
+
+    }
+
+    @Override
+    public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
+        Toast.makeText(this, "onFling", Toast.LENGTH_SHORT).show();
+        Log.d(TAG, "onFling " + motionEvent.toString() + "::::" + motionEvent1.toString());
+        boolean leftSwip = motionEvent.getX() < motionEvent1.getX();
+        Log.d(TAG, "onFling left: " + leftSwip);
+        boolean rightSwip = motionEvent.getX() > motionEvent1.getX();
+        Log.d(TAG, "onFling right: " + rightSwip);
+        if (leftSwip) {
+
+
+
+        } else if (rightSwip) {
+            Intent intent = new Intent(this, DataListView.class);
+            startActivity(intent);
+        }
+
+        return true;
     }
 }

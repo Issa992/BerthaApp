@@ -30,9 +30,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+//        val toolbar = findViewById<Toolbar>(R.id.toolbar)
         //setSupportActionBar(toolbar);
-        val actionBar = supportActionBar
+//        val actionBar = supportActionBar
         //  actionBar.setDisplayHomeAsUpEnabled(true);
 
         preferences = getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE)
@@ -74,7 +74,7 @@ class MainActivity : AppCompatActivity() {
     companion object {
 
         val PREF_FILE_NAME = "loginPref"
-        val USERNAME = "anbo"
+        val USERNAME = "issa"
         val PASSWORD = "1234"
     }
 

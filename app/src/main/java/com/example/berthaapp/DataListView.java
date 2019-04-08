@@ -12,6 +12,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ShareActionProvider;
 import android.widget.TextView;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
+
 import android.widget.Toast;
 
 
@@ -22,13 +25,17 @@ import java.lang.reflect.Array;
 import java.util.Arrays;
 
 
-public class DataListView extends AppCompatActivity {
+public class DataListView extends AppCompatActivity implements GestureDetector.OnGestureListener {
     private ShareActionProvider shareActionProvider;
+    private static final String TAG="Gestures";
+    private GestureDetector gestureDetector;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_data_list_view);
         //toolBar
 //        Toolbar toolbar=findViewById(R.id.toolbar);
@@ -44,6 +51,8 @@ public class DataListView extends AppCompatActivity {
         listHeader.setTextAppearance(this, android.R.style.TextAppearance_Large);
         ListView listView=findViewById(R.id.main_data_listview);
         listView.addHeaderView(listHeader);
+        gestureDetector=new GestureDetector(this,this);
+
     }
 
     @Override
@@ -73,12 +82,65 @@ public class DataListView extends AppCompatActivity {
     protected void onStart(){
         super.onStart();
         ReadTask task=new ReadTask();
-        task.execute("https://berthabackendrestprovider.azurewebsites.net/api/data/anbo/");
+        task.execute("https://berthabackendrestprovider.azurewebsites.net/api/data/issa/");
     }
     public void adddata(View view) {
         Intent intent = new Intent(this, AddData.class);
         startActivity(intent);
     }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent motionEvent){
+        Log.d(TAG, "onTouch: " + motionEvent);
+        boolean eventHandlingFinished = true;
+        //return eventHandlingFinished;
+        return gestureDetector.onTouchEvent(motionEvent);}
+    @Override
+    public boolean onDown(MotionEvent motionEvent) {
+        return true;
+    }
+
+    @Override
+    public void onShowPress(MotionEvent motionEvent) {
+
+    }
+
+    @Override
+    public boolean onSingleTapUp(MotionEvent motionEvent) {
+        return true;
+    }
+
+    @Override
+    public boolean onScroll(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
+        Log.d(TAG, "onScroll");
+        return true;    }
+
+    @Override
+    public void onLongPress(MotionEvent motionEvent) {
+        Log.d(TAG, "onLongPress");
+    }
+
+    @Override
+    public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
+        Toast.makeText(this,"onFling",Toast.LENGTH_SHORT).show();
+        Log.d(TAG, "onFling " + motionEvent.toString() + "::::" + motionEvent1.toString());
+        boolean leftSwip=motionEvent.getX() < motionEvent1.getX();
+        Log.d(TAG, "onFling left: " + leftSwip);
+        boolean rightSwip=motionEvent.getX()> motionEvent1.getX();
+        Log.d(TAG, "onFling right: " + rightSwip);
+        if (leftSwip){
+            Log.d(TAG, "onFling left: " + leftSwip);
+
+
+        }
+        else if (rightSwip){
+            Intent intent=new Intent(this,MainActivity.class);
+            startActivity(intent);
+        }
+
+        return true;
+    }
+
     private class ReadTask extends ReadHttpTask {
         @Override
         protected void onPostExecute(CharSequence jsonString) {

@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">BerthaApp</string>
+    <string name="view_data">View Data history</string>
+    <string name="add_data">Add Data</string>
+</resources>

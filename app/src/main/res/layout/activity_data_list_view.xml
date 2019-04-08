@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DataListView">
+
+    <include layout="@layout/layout"
+        android:id="@+id/toolbar">
+    </include>
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="adddata"
+        android:text="Add Data"
+        android:layout_below="@+id/main_data_listview"
+        />
+
+   <!--! <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+       -->
+
+    <ListView
+        android:id="@+id/main_data_listview"
+        android:layout_width="260dp"
+        android:layout_height="450dp"
+        android:layout_centerInParent="true"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
+
+        />
+        <TextView
+            android:id="@+id/main_message_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+
+
+
+
+</RelativeLayout>
